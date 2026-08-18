@@ -14,6 +14,13 @@ RUN apt-get update && apt-get install -y \
 # Install Composer
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
+# Create application user matching host user bs (UID/GID 1000)
+RUN groupadd -g 1000 appgroup \
+    && useradd -u 1000 -g 1000 -m -s /bin/bash appuser
+
 WORKDIR /var/www/html
+
+# Run application as host user
+USER appuser
 
 CMD ["php", "artisan", "serve", "--host=0.0.0.0", "--port=8000"]

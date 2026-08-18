@@ -4,6 +4,7 @@ services:
             context: .
             dockerfile: Dockerfile
         container_name: learning-platform-app
+        user: "1000:1000"
         working_dir: /var/www/html
         volumes:
             - ./:/var/www/html

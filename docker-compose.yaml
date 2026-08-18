@@ -1,0 +1,35 @@
+services:
+    app:
+        build:
+            context: .
+            dockerfile: Dockerfile
+        container_name: learning-platform-app
+        working_dir: /var/www/html
+        volumes:
+            - ./:/var/www/html
+        ports:
+            - "8000:8000"
+        depends_on:
+            db:
+                condition: service_healthy
+
+    db:
+        image: mysql:8.4
+        container_name: learning-platform-db
+        environment:
+            MYSQL_DATABASE: learning_platform
+            MYSQL_USER: learning
+            MYSQL_PASSWORD: learning
+            MYSQL_ROOT_PASSWORD: root
+        ports:
+            - "3307:3306"
+        volumes:
+            - mysql_data:/var/lib/mysql
+        healthcheck:
+            test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-uroot", "-proot"]
+            interval: 5s
+            timeout: 5s
+            retries: 10
+
+volumes:
+    mysql_data:

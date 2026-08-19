@@ -72,3 +72,36 @@ type Exercise {
     created_at: DateTime!
     updated_at: DateTime!
 }
+
+type Mutation {
+    createCourse(
+        title: String!
+            @rules(apply: ["min:3", "max:255"])
+
+        description: String
+            @rules(apply: ["nullable", "max:5000"])
+
+        level: String!
+            @rules(apply: ["in:beginner,intermediate,advanced"])
+    ): Course
+        @field(resolver: "App\\GraphQL\\Mutations\\CourseMutation@create")
+
+    updateCourse(
+        id: ID!
+            @rules(apply: ["exists:courses,id"])
+
+        title: String
+            @rules(apply: ["sometimes", "min:3", "max:255"])
+
+        description: String
+            @rules(apply: ["nullable", "max:5000"])
+
+        level: String
+            @rules(apply: ["in:beginner,intermediate,advanced"])
+    ): Course @update
+
+    deleteCourse(
+        id: ID!
+            @rules(apply: ["exists:courses,id"])
+    ): Course @delete
+}

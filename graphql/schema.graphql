@@ -60,5 +60,15 @@ type Lesson {
     position: Int!
     created_at: DateTime!
     updated_at: DateTime!
+
+    exercises: [Exercise!]! @hasMany
 }
 
+type Exercise {
+    id: ID!
+    title: String!
+    description: String
+    position: Int!
+    created_at: DateTime!
+    updated_at: DateTime!
+}

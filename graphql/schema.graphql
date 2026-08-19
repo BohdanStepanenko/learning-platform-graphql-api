@@ -49,5 +49,16 @@ type Course {
     level: String!
     created_at: DateTime!
     updated_at: DateTime!
+
+    lessons: [Lesson!]! @hasMany
+}
+
+type Lesson {
+    id: ID!
+    title: String!
+    content: String
+    position: Int!
+    created_at: DateTime!
+    updated_at: DateTime!
 }
 
